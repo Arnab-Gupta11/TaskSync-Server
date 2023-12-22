@@ -24,6 +24,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const taskCollection = client.db("TaskSyncDB").collection("tasks");
+    const feedbackCollection = client.db("TaskSyncDB").collection("feedbacks");
 
     app.get("/tasks", async (req, res) => {
       try {
@@ -32,6 +33,14 @@ async function run() {
         console.log("🚀 ~ file: index.js:32 ~ app.get ~ queryEmail:", queryEmail);
         console.log("🚀 ~ file: index.js:33 ~ app.get ~ query:", query);
         const result = await taskCollection.find(query).toArray();
+        res.send(result);
+      } catch (error) {
+        console.log(error.message);
+      }
+    });
+    app.get("/feedbacks", async (req, res) => {
+      try {
+        const result = await feedbackCollection.find().toArray();
         res.send(result);
       } catch (error) {
         console.log(error.message);
